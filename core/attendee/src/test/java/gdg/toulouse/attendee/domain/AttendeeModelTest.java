@@ -31,14 +31,14 @@ public class AttendeeModelTest {
     public void shouldRetrieveAnAttenBadge() throws Exception {
         final AttendeeModel attendeeModel = create(new AttendeeRepositoryTest(), new TemplateModelTest());
 
-        assertThat(attendeeModel.getAttendeeBadge("a.b@c.d").isPresent()).isTrue();
+        assertThat(attendeeModel.getAttendeeBadge("a.b@c.d").isSuccess()).isTrue();
     }
 
     @Test
     public void shouldNotRetrieveAnAttenBadge() throws Exception {
         final AttendeeModel attendeeModel = create(new AttendeeRepositoryTest(), new TemplateModelTest());
 
-        assertThat(attendeeModel.getAttendeeBadge("a.b@c.bar").isPresent()).isFalse();
+        assertThat(attendeeModel.getAttendeeBadge("a.b@c.bar").isSuccess()).isFalse();
     }
 
     //
@@ -68,13 +68,13 @@ public class AttendeeModelTest {
 
     private class TemplateModelTest implements TemplateModel {
         @Override
-        public TemplateInstance instantiate(Map<String, String> parameters) {
-            return new TemplateInstance() {
+        public Try<TemplateInstance> instantiate(Map<String, String> parameters) {
+            return Try.success(new TemplateInstance() {
                 @Override
                 public Try<Unit> dump(OutputStream stream) {
                     return Try.success(Unit.UNIT);
                 }
-            };
+            });
         }
     }
 

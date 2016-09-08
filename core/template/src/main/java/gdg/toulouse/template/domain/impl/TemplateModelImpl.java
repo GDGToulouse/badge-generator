@@ -1,5 +1,6 @@
 package gdg.toulouse.template.domain.impl;
 
+import gdg.toulouse.data.Try;
 import gdg.toulouse.template.domain.TemplateModel;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
@@ -14,7 +15,7 @@ public class TemplateModelImpl implements TemplateModel {
         this.templateRepository = templateRepository;
     }
 
-    public TemplateInstance instantiate(Map<String, String> parameters) {
+    public Try<TemplateInstance> instantiate(Map<String, String> parameters) {
         return templateRepository.getGenerator().apply(parameters);
     }
 }

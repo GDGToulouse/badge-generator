@@ -23,8 +23,8 @@ public class BilletWebCSVDecoderTest {
         final List<Attendee> attendees = BilletWebCSVDecoder.getAttendeesFromStream(this.givenAnInputStream());
 
         assertThat(attendees).containsOnly(
-                new Attendee("B","A","a.b@g.com", null, null),
-                new Attendee("D","C","c.d@g.com", null, null)
+                new Attendee("B", "A", "a.b@g.com", null, null),
+                new Attendee("D", "C", "c.d@g.com", null, null)
         );
     }
 

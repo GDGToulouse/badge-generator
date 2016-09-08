@@ -3,12 +3,13 @@ package gdg.toulouse.attendee.domain.impl;
 import gdg.toulouse.attendee.data.Attendee;
 import gdg.toulouse.attendee.domain.AttendeeBadge;
 import gdg.toulouse.attendee.domain.AttendeeModel;
+import gdg.toulouse.attendee.exception.AttendeeNotFoundException;
 import gdg.toulouse.attendee.service.AttendeeRepository;
+import gdg.toulouse.data.Try;
 import gdg.toulouse.template.domain.TemplateModel;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Optional;
 
 import static gdg.toulouse.attendee.utils.Constants.COMPANY;
 import static gdg.toulouse.attendee.utils.Constants.MAIL;
@@ -30,17 +31,18 @@ class AttendeeModelImpl implements AttendeeModel {
         return attendeeRepository.getAttendeesMail();
     }
 
-    public Optional<AttendeeBadge> getAttendeeBadge(String identifier) {
+    public Try<AttendeeBadge> getAttendeeBadge(String identifier) {
         return attendeeRepository.findByMail(identifier).
-                map(attendee -> getAttendeeBadge(getParametersForGeneration(attendee)));
+                map(attendee -> getAttendeeBadge(getParametersForGeneration(attendee))).
+                orElseGet(() -> Try.failure(new AttendeeNotFoundException(identifier)));
     }
 
     //
     // Private behaviors
     //
 
-    private AttendeeBadge getAttendeeBadge(HashMap<String, String> parameters) {
-        return AttendeeBadgeBuilder.create(templateModel.instantiate(parameters));
+    private Try<AttendeeBadge> getAttendeeBadge(HashMap<String, String> parameters) {
+        return templateModel.instantiate(parameters).map(AttendeeBadgeBuilder::create);
     }
 
     private HashMap<String, String> getParametersForGeneration(Attendee attendee) {

@@ -53,7 +53,7 @@ public class BilletWebCSVDecoder {
             }
         };
 
-        return new Attendee(extract.apply(surname),extract.apply(name),extract.apply(mail),null, null);
+        return new Attendee(extract.apply(surname), extract.apply(name), extract.apply(mail), null, null);
     }
 
     private static Stream<String> getLineStream(InputStream stream) throws UnsupportedEncodingException {
