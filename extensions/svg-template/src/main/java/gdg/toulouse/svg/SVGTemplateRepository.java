@@ -5,7 +5,6 @@ import gdg.toulouse.data.Unit;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -58,11 +57,10 @@ public class SVGTemplateRepository implements TemplateRepository {
         final Document document = this.document;
 
         map.entrySet().stream().forEach(keyValueEntry -> {
-            final Node element = getElementById(document, keyValueEntry.getKey());
-            if (element != null) {
+            getElementById(document, keyValueEntry.getKey()).ifPresent(element -> {
                 removeChilds(element);
                 element.setTextContent(keyValueEntry.getValue());
-            }
+            });
         });
 
         return document;

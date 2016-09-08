@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 
 public class DomUtils {
 
@@ -32,8 +33,7 @@ public class DomUtils {
     }
 
     public static void transform(Document document, OutputStream stream) throws TransformerException {
-        TransformerFactory.newInstance().newTransformer().
-                transform(new DOMSource(document), new StreamResult(stream));
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(stream));
     }
 
     public static void removeChilds(Node element) {
@@ -42,21 +42,33 @@ public class DomUtils {
         }
     }
 
-    public static Node getElementById(Node node, String value) {
-        if (value.equals(getAttributeId(node))) {
-            return node;
+    public static Optional<Node> getElementById(Node node, String value) {
+        if (hasTheRequiredId(node, value)) {
+            return Optional.of(node);
         }
 
-        final NodeList childNodes = node.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            final Node byId = getElementById(childNodes.item(i), value);
+        return getElementByIdFromChild(value, node.getChildNodes());
+    }
 
-            if (byId != null) {
+    //
+    // Private behaviors
+    //
+
+    private static Optional<Node> getElementByIdFromChild(String value, NodeList childNodes) {
+
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            final Optional<Node> byId = getElementById(childNodes.item(i), value);
+
+            if (byId.isPresent()) {
                 return byId;
             }
         }
 
-        return null;
+        return Optional.empty();
+    }
+
+    private static boolean hasTheRequiredId(Node node, String value) {
+        return value.equals(getAttributeId(node));
     }
 
     private static String getAttributeId(Node node) {
