@@ -5,37 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>gdg.toulouse</groupId>
-        <artifactId>badge-generator</artifactId>
+        <artifactId>badge-generator-core</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>attendee</artifactId>
+    <artifactId>commons</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>attendee</name>
+    <name>commons</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>gdg.toulouse</groupId>
-            <artifactId>commons</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>gdg.toulouse</groupId>
-            <artifactId>template</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.7.3</version>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

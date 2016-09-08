@@ -2,8 +2,13 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>gdg.toulouse</groupId>
-    <artifactId>badge-generator</artifactId>
+    <parent>
+        <groupId>gdg.toulouse</groupId>
+        <artifactId>badge-generator</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>badge-generator-core</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://github.com/GDGToulouse/badge-generator</url>
@@ -19,23 +24,10 @@
     </developers>
 
     <modules>
-        <module>core</module>
+        <module>commons</module>
+        <module>template</module>
+        <module>attendee</module>
+        <module>interactive</module>
     </modules>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <debug>true</debug>
-                    <verbose>true</verbose>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
