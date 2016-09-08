@@ -46,4 +46,29 @@ public class Attendee {
     public Optional<String> getTwitter() {
         return Optional.ofNullable(twitter);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Attendee attendee = (Attendee) o;
+
+        if (surname != null ? !surname.equals(attendee.surname) : attendee.surname != null) return false;
+        if (name != null ? !name.equals(attendee.name) : attendee.name != null) return false;
+        if (mail != null ? !mail.equals(attendee.mail) : attendee.mail != null) return false;
+        if (company != null ? !company.equals(attendee.company) : attendee.company != null) return false;
+        return twitter != null ? twitter.equals(attendee.twitter) : attendee.twitter == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = surname != null ? surname.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (mail != null ? mail.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        result = 31 * result + (twitter != null ? twitter.hashCode() : 0);
+        return result;
+    }
 }
