@@ -21,11 +21,9 @@ import static gdg.toulouse.svg.DomUtils.transform;
 
 public class SVGTemplateRepository implements TemplateRepository {
 
-    private final String baseURL;
     private final Document document;
 
     public SVGTemplateRepository(URL resource) throws IOException, ParserConfigurationException, SAXException {
-        this.baseURL = resource.toString();
         try (InputStream stream = resource.openStream()) {
             this.document = parse(stream);
         }
@@ -40,10 +38,8 @@ public class SVGTemplateRepository implements TemplateRepository {
     // Private behaviors
     //
 
-    private  Try<TemplateInstance> getInstance(Map<String, String> map) {
-        final Document document = performInstantiation(map);
-
-        return Try.success(stream -> {
+    private Try<TemplateInstance> getInstance(Map<String, String> map) {
+        return performInstantiation(map).map(document -> stream -> {
             try {
                 transform(document, stream);
                 return Try.success(Unit.UNIT);
@@ -53,16 +49,14 @@ public class SVGTemplateRepository implements TemplateRepository {
         });
     }
 
-    private Document performInstantiation(Map<String, String> map) {
-        final Document document = this.document;
-
-        map.entrySet().stream().forEach(keyValueEntry -> {
-            getElementById(document, keyValueEntry.getKey()).ifPresent(element -> {
-                removeChilds(element);
-                element.setTextContent(keyValueEntry.getValue());
+    private Try<Document> performInstantiation(Map<String, String> map) {
+        return DomUtils.clone(this.document).onSuccess(document -> {
+            map.entrySet().stream().forEach(keyValueEntry -> {
+                getElementById(document, keyValueEntry.getKey()).ifPresent(element -> {
+                    removeChilds(element);
+                    element.setTextContent(keyValueEntry.getValue());
+                });
             });
         });
-
-        return document;
     }
 }

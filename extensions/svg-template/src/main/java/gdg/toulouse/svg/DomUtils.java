@@ -1,5 +1,6 @@
 package gdg.toulouse.svg;
 
+import gdg.toulouse.data.Try;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,46 +19,65 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 
-public class DomUtils {
+class DomUtils {
 
     private static final String ID = "id";
 
-    public static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
+    static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
         try (FileInputStream stream = new FileInputStream(file)) {
             return parse(stream);
         }
     }
 
-    public static Document parse(InputStream stream) throws ParserConfigurationException, IOException, SAXException {
+    static Document parse(InputStream stream) throws ParserConfigurationException, IOException, SAXException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
     }
 
-    public static void transform(Document document, OutputStream stream) throws TransformerException {
-        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(stream));
+    static Try<Document> clone(Document document) {
+        /*
+        try {
+            final DOMResult result = new DOMResult();
+            TransformerFactory.newInstance().newTransformer().
+                    transform(new DOMSource(document),result);
+            return Try.success(Document.class.cast(result.getNode()));
+        } catch (Exception e) {
+            return Try.failure(e);
+        }
+        */
+        return Try.success(document);
     }
 
-    public static void removeChilds(Node element) {
+    static void transform(Document document, OutputStream stream) throws TransformerException {
+        TransformerFactory.newInstance().newTransformer().
+                transform(new DOMSource(document), new StreamResult(stream));
+    }
+
+    static void removeChilds(Node element) {
         while (element.hasChildNodes()) {
             element.removeChild(element.getFirstChild());
         }
     }
 
-    public static Optional<Node> getElementById(Node node, String value) {
-        if (hasTheRequiredId(node, value)) {
-            return Optional.of(node);
-        }
-
-        return getElementByIdFromChild(value, node.getChildNodes());
+    static Optional<Node> getElementById(Node node, String value) {
+        return getElementByIdFromNode(node, value);
     }
 
     //
     // Private behaviors
     //
 
-    private static Optional<Node> getElementByIdFromChild(String value, NodeList childNodes) {
+    private static Optional<Node> getElementByIdFromNode(Node node, String value) {
+        if (hasTheRequiredId(node, value)) {
+            return Optional.of(node);
+        }
+
+        return getElementByIdFromChilds(value, node.getChildNodes());
+    }
+
+    private static Optional<Node> getElementByIdFromChilds(String value, NodeList childNodes) {
 
         for (int i = 0; i < childNodes.getLength(); i++) {
-            final Optional<Node> byId = getElementById(childNodes.item(i), value);
+            final Optional<Node> byId = getElementByIdFromNode(childNodes.item(i), value);
 
             if (byId.isPresent()) {
                 return byId;
