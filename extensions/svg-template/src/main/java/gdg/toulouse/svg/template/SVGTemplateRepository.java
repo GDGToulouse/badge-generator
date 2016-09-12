@@ -15,9 +15,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.function.Function;
 
-import static gdg.toulouse.svg.utils.Constants.$_NAME;
-import static gdg.toulouse.svg.utils.Constants.$_QRCODE;
-import static gdg.toulouse.svg.utils.Constants.$_SURNAME;
+import static gdg.toulouse.svg.utils.Constants.NAME;
+import static gdg.toulouse.svg.utils.Constants.QRCODE;
+import static gdg.toulouse.svg.utils.Constants.SURNAME;
 import static gdg.toulouse.svg.utils.Constants.DATA_IMAGE_PNG_BASE64;
 import static gdg.toulouse.svg.utils.Constants.XLINK_HREF;
 import static gdg.toulouse.svg.utils.DocumentUtils.getElementById;
@@ -56,11 +56,11 @@ public class SVGTemplateRepository implements TemplateRepository {
 
     private Try<Document> performInstantiation(TemplateData templateData) {
         return DocumentUtils.clone(this.document).onSuccess(document -> {
-            getElementById(document, $_SURNAME).
+            getElementById(document, SURNAME).
                     ifPresent(node -> DocumentUtils.setContent(node, templateData.getSurname()));
-            getElementById(document, $_NAME).
+            getElementById(document, NAME).
                     ifPresent(node -> DocumentUtils.setContent(node, templateData.getName()));
-            getElementById(document, $_QRCODE).
+            getElementById(document, QRCODE).
                     ifPresent(node -> {
                         final String identity = templateData.getSurname() + " " + templateData.getName();
                         final String mail = templateData.getMail();
