@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 
-class DomUtils {
+class DocumentUtils {
 
     private static final String ID = "id";
 
@@ -34,17 +34,7 @@ class DomUtils {
     }
 
     static Try<Document> clone(Document document) {
-        /*
-        try {
-            final DOMResult result = new DOMResult();
-            TransformerFactory.newInstance().newTransformer().
-                    transform(new DOMSource(document),result);
-            return Try.success(Document.class.cast(result.getNode()));
-        } catch (Exception e) {
-            return Try.failure(e);
-        }
-        */
-        return Try.success(document);
+        return Try.success(Document.class.cast(document.cloneNode(true)));
     }
 
     static void transform(Document document, OutputStream stream) throws TransformerException {
@@ -59,25 +49,25 @@ class DomUtils {
     }
 
     static Optional<Node> getElementById(Node node, String value) {
-        return getElementByIdFromNode(node, value);
+        return getElement(node, ID, value);
     }
 
     //
     // Private behaviors
     //
 
-    private static Optional<Node> getElementByIdFromNode(Node node, String value) {
-        if (hasTheRequiredId(node, value)) {
+    private static Optional<Node> getElement(Node node, String name, String value) {
+        if (hasTheRequiredId(node, name, value)) {
             return Optional.of(node);
         }
 
-        return getElementByIdFromChilds(value, node.getChildNodes());
+        return getElementByIdFromChilds(node.getChildNodes(), name, value);
     }
 
-    private static Optional<Node> getElementByIdFromChilds(String value, NodeList childNodes) {
+    private static Optional<Node> getElementByIdFromChilds(NodeList childNodes, String name, String value) {
 
         for (int i = 0; i < childNodes.getLength(); i++) {
-            final Optional<Node> byId = getElementByIdFromNode(childNodes.item(i), value);
+            final Optional<Node> byId = getElement(childNodes.item(i), name, value);
 
             if (byId.isPresent()) {
                 return byId;
@@ -87,16 +77,16 @@ class DomUtils {
         return Optional.empty();
     }
 
-    private static boolean hasTheRequiredId(Node node, String value) {
-        return value.equals(getAttributeId(node));
+    private static boolean hasTheRequiredId(Node node, String name, String value) {
+        return value.equals(getAttribute(node, name));
     }
 
-    private static String getAttributeId(Node node) {
+    private static String getAttribute(Node node, String name) {
         if (node.getAttributes() == null) {
             return "";
         }
 
-        final Node id = node.getAttributes().getNamedItem(ID);
+        final Node id = node.getAttributes().getNamedItem(name);
 
         if (id == null) {
             return "";

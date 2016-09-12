@@ -14,10 +14,10 @@ import java.net.URL;
 import java.util.Map;
 import java.util.function.Function;
 
-import static gdg.toulouse.svg.DomUtils.getElementById;
-import static gdg.toulouse.svg.DomUtils.parse;
-import static gdg.toulouse.svg.DomUtils.removeChilds;
-import static gdg.toulouse.svg.DomUtils.transform;
+import static gdg.toulouse.svg.DocumentUtils.getElementById;
+import static gdg.toulouse.svg.DocumentUtils.parse;
+import static gdg.toulouse.svg.DocumentUtils.removeChilds;
+import static gdg.toulouse.svg.DocumentUtils.transform;
 
 public class SVGTemplateRepository implements TemplateRepository {
 
@@ -50,7 +50,7 @@ public class SVGTemplateRepository implements TemplateRepository {
     }
 
     private Try<Document> performInstantiation(Map<String, String> map) {
-        return DomUtils.clone(this.document).onSuccess(document -> {
+        return DocumentUtils.clone(this.document).onSuccess(document -> {
             map.entrySet().stream().forEach(keyValueEntry -> {
                 getElementById(document, keyValueEntry.getKey()).ifPresent(element -> {
                     removeChilds(element);

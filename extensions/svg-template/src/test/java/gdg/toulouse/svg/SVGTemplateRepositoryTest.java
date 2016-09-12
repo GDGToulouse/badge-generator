@@ -31,7 +31,7 @@ public class SVGTemplateRepositoryTest {
         stream.close();
 
         final ByteArrayOutputStream expect = new ByteArrayOutputStream();
-        DomUtils.transform(DomUtils.parse(givenSVGURL("result").openStream()), expect);
+        DocumentUtils.transform(DocumentUtils.parse(givenSVGURL("result").openStream()), expect);
         expect.close();
 
         assertThat(stream.toString()).isEqualTo(expect.toString());
