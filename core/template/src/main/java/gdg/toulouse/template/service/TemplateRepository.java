@@ -2,13 +2,13 @@ package gdg.toulouse.template.service;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.design.annotations.ServiceInterface;
+import gdg.toulouse.template.data.TemplateData;
 
-import java.util.Map;
 import java.util.function.Function;
 
 @ServiceInterface
 public interface TemplateRepository {
 
-    Function<Map<String, String>, Try<TemplateInstance>> getGenerator();
+    Function<TemplateData, Try<TemplateInstance>> getGenerator();
 
 }

@@ -4,6 +4,7 @@ import gdg.toulouse.attendee.data.Attendee;
 import gdg.toulouse.attendee.service.AttendeeRepository;
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
+import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.domain.TemplateModel;
 import gdg.toulouse.template.service.TemplateInstance;
 import org.junit.Test;
@@ -11,7 +12,6 @@ import org.junit.Test;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -68,7 +68,7 @@ public class AttendeeModelTest {
 
     private class TemplateModelTest implements TemplateModel {
         @Override
-        public Try<TemplateInstance> instantiate(Map<String, String> parameters) {
+        public Try<TemplateInstance> instantiate(TemplateData templateData) {
             return Try.success(new TemplateInstance() {
                 @Override
                 public Try<Unit> dump(OutputStream stream) {

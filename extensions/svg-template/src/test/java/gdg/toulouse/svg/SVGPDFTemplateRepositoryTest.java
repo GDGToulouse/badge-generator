@@ -2,6 +2,7 @@ package gdg.toulouse.svg;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
+import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.junit.Test;
@@ -11,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +20,7 @@ public class SVGPDFTemplateRepositoryTest {
     @Test
     public void shouldReadSVGFile() throws Exception {
         final TemplateRepository template = new SVGPDFTemplateRepository(givenSVGURL("test"));
-        final Try<TemplateInstance> instance = template.getGenerator().apply(givenValues());
+        final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         assertThat(instance.isSuccess()).isTrue();
     }
@@ -28,7 +28,7 @@ public class SVGPDFTemplateRepositoryTest {
     @Test
     public void shouldWritePDFFile() throws Exception {
         final TemplateRepository template = new SVGPDFTemplateRepository(givenSVGURL("badge"));
-        final Try<TemplateInstance> instance = template.getGenerator().apply(givenValues());
+        final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         instance.onSuccess(templateInstance -> {
             final File file = new File("/tmp/test.pdf");
@@ -54,15 +54,7 @@ public class SVGPDFTemplateRepositoryTest {
         return SVGTemplateRepositoryTest.class.getResource(String.format("/%s.svg", name));
     }
 
-    private HashMap<String, String> givenValues() {
-        return new HashMap<String, String>() {{
-            this.put("$surname", "John");
-            this.put("$name", "Doe");
-            this.put("$mail", "john.doe@acme.com");
-        }};
-    }
-
-    private double offset(String s) {
-        return 187.25 / (s.length()/2);
+    private TemplateData givenTemplateData() {
+        return new TemplateData("John", "Doe", "john.doe@acme.com", null,  null);
     }
 }

@@ -2,6 +2,7 @@ package gdg.toulouse.svg;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
+import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.w3c.dom.Document;
@@ -11,12 +12,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Map;
 import java.util.function.Function;
 
 import static gdg.toulouse.svg.DocumentUtils.getElementById;
 import static gdg.toulouse.svg.DocumentUtils.parse;
-import static gdg.toulouse.svg.DocumentUtils.removeChilds;
 import static gdg.toulouse.svg.DocumentUtils.transform;
 
 public class SVGTemplateRepository implements TemplateRepository {
@@ -30,7 +29,7 @@ public class SVGTemplateRepository implements TemplateRepository {
     }
 
     @Override
-    public Function<Map<String, String>, Try<TemplateInstance>> getGenerator() {
+    public Function<TemplateData, Try<TemplateInstance>> getGenerator() {
         return this::getInstance;
     }
 
@@ -38,8 +37,8 @@ public class SVGTemplateRepository implements TemplateRepository {
     // Private behaviors
     //
 
-    private Try<TemplateInstance> getInstance(Map<String, String> map) {
-        return performInstantiation(map).map(document -> stream -> {
+    private Try<TemplateInstance> getInstance(TemplateData templateData) {
+        return performInstantiation(templateData).map(document -> stream -> {
             try {
                 transform(document, stream);
                 return Try.success(Unit.UNIT);
@@ -49,21 +48,19 @@ public class SVGTemplateRepository implements TemplateRepository {
         });
     }
 
-    private Try<Document> performInstantiation(Map<String, String> map) {
+    private Try<Document> performInstantiation(TemplateData templateData) {
         return DocumentUtils.clone(this.document).onSuccess(document -> {
-            map.entrySet().stream().forEach(keyValueEntry -> {
-                getElementById(document, keyValueEntry.getKey()).ifPresent(element -> {
-                    removeChilds(element);
-                    element.setTextContent(keyValueEntry.getValue());
-                });
-            });
-
-            getElementById(document, "$qrcode").ifPresent(node -> {
-                final String identity = map.get("$surname") + " " + map.get("$name");
-                final String mail = map.get("$mail");
-                final String image = "data:image/png;base64," + PNGQRCode.createFrom(identity, mail);
-                DocumentUtils.setAttribute(node, "xlink:href", image);
-            });
+            getElementById(document, "$surname").
+                    ifPresent(node -> DocumentUtils.setContent(node, templateData.getSurname()));
+            getElementById(document, "$name").
+                    ifPresent(node -> DocumentUtils.setContent(node, templateData.getName()));
+            getElementById(document, "$qrcode").
+                    ifPresent(node -> {
+                        final String identity = templateData.getSurname() + " " + templateData.getName();
+                        final String mail = templateData.getMail();
+                        final String image = "data:image/png;base64," + PNGQRCode.createFrom(identity, mail);
+                        DocumentUtils.setAttribute(node, "xlink:href", image);
+                    });
         });
     }
 }

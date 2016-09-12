@@ -52,7 +52,7 @@ class DocumentUtils {
         return getElement(node, ID, value);
     }
 
-    public static void setAttribute(Node node, String name, String value) {
+    static void setAttribute(Node node, String name, String value) {
         if (node.getAttributes() == null) {
             return;
         }
@@ -66,6 +66,10 @@ class DocumentUtils {
         id.setNodeValue(value);
     }
 
+    static void setContent(Node node, String value) {
+        removeChilds(node);
+        node.setTextContent(value);
+    }
 
     //
     // Private behaviors

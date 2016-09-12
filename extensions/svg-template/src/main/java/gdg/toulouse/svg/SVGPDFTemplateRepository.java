@@ -2,6 +2,7 @@ package gdg.toulouse.svg;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
+import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.apache.batik.transcoder.Transcoder;
@@ -19,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Map;
 import java.util.function.Function;
 
 public class SVGPDFTemplateRepository implements TemplateRepository {
@@ -31,12 +31,12 @@ public class SVGPDFTemplateRepository implements TemplateRepository {
     }
 
     @Override
-    public Function<Map<String, String>, Try<TemplateInstance>> getGenerator() {
+    public Function<TemplateData, Try<TemplateInstance>> getGenerator() {
         return this::getInstance;
     }
 
-    private Try<TemplateInstance> getInstance(Map<String, String> map) {
-        final Try<TemplateInstance> templateInstanceTry = svgTemplateRepository.getGenerator().apply(map);
+    private Try<TemplateInstance> getInstance(TemplateData templateData) {
+        final Try<TemplateInstance> templateInstanceTry = svgTemplateRepository.getGenerator().apply(templateData);
         return templateInstanceTry.flatmap(templateInstance -> Try.success(stream -> {
             try {
                 final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

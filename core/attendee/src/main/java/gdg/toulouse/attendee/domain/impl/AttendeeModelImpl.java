@@ -6,17 +6,10 @@ import gdg.toulouse.attendee.domain.AttendeeModel;
 import gdg.toulouse.attendee.exception.AttendeeNotFoundException;
 import gdg.toulouse.attendee.service.AttendeeRepository;
 import gdg.toulouse.data.Try;
+import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.domain.TemplateModel;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import static gdg.toulouse.attendee.utils.Constants.COMPANY;
-import static gdg.toulouse.attendee.utils.Constants.MAIL;
-import static gdg.toulouse.attendee.utils.Constants.NAME;
-import static gdg.toulouse.attendee.utils.Constants.SURNAME;
-import static gdg.toulouse.attendee.utils.Constants.TWITTER;
 
 class AttendeeModelImpl implements AttendeeModel {
 
@@ -34,7 +27,7 @@ class AttendeeModelImpl implements AttendeeModel {
 
     public Try<AttendeeBadge> getAttendeeBadge(String identifier) {
         return attendeeRepository.findByMail(identifier).
-                map(attendee -> getAttendeeBadge(getParametersForGeneration(attendee))).
+                map(attendee -> getAttendeeBadge(getTemplateDataFromAttendee(attendee))).
                 orElseGet(() -> Try.failure(new AttendeeNotFoundException(identifier)));
     }
 
@@ -42,24 +35,16 @@ class AttendeeModelImpl implements AttendeeModel {
     // Private behaviors
     //
 
-    private Try<AttendeeBadge> getAttendeeBadge(Map<String, String> parameters) {
-        return templateModel.instantiate(parameters).map(AttendeeBadgeBuilder::create);
+    private Try<AttendeeBadge> getAttendeeBadge(TemplateData templateData) {
+        return templateModel.instantiate(templateData).map(AttendeeBadgeBuilder::create);
     }
 
-    private HashMap<String, String> getParametersForGeneration(Attendee attendee) {
-        final HashMap<String, String> parameters = new HashMap<>();
-
-        parameters.put(SURNAME, attendee.getSurname());
-        parameters.put(NAME, attendee.getName());
-        parameters.put(MAIL, attendee.getMail());
-
-        attendee.getCompany().ifPresent(company -> {
-            parameters.put(COMPANY, company);
-        });
-        attendee.getTwitter().ifPresent(twitter -> {
-            parameters.put(TWITTER, twitter);
-        });
-
-        return parameters;
+    private TemplateData getTemplateDataFromAttendee(Attendee attendee) {
+        return new TemplateData(
+                attendee.getSurname(),
+                attendee.getName(),
+                attendee.getMail(),
+                attendee.getCompany().orElse(null),
+                attendee.getTwitter().orElse(null));
     }
 }

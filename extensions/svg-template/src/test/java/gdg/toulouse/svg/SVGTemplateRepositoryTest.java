@@ -1,13 +1,13 @@
 package gdg.toulouse.svg;
 
 import gdg.toulouse.data.Try;
+import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
-import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +16,7 @@ public class SVGTemplateRepositoryTest {
     @Test
     public void shouldReadSVGFile() throws Exception {
         final TemplateRepository template = new SVGTemplateRepository(givenSVGURL("test"));
-        final Try<TemplateInstance> instance = template.getGenerator().apply(givenValues());
+        final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         assertThat(instance.isSuccess()).isTrue();
     }
@@ -24,7 +24,7 @@ public class SVGTemplateRepositoryTest {
     @Test
     public void shouldWriteSVGFile() throws Exception {
         final TemplateRepository template = new SVGTemplateRepository(givenSVGURL("test"));
-        final Try<TemplateInstance> instance = template.getGenerator().apply(givenValues());
+        final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
         instance.success().dump(stream);
@@ -45,12 +45,9 @@ public class SVGTemplateRepositoryTest {
         return SVGTemplateRepositoryTest.class.getResource(String.format("/%s.svg", name));
     }
 
-    private HashMap<String, String> givenValues() {
-        return new HashMap<String, String>() {{
-            this.put("$surname", "John");
-            this.put("$name", "Doe");
-        }};
-    }
 
+    private TemplateData givenTemplateData() {
+        return new TemplateData("John", "Doe", "john.doe@acme.com", null,  null);
+    }
 
 }
