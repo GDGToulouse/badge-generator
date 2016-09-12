@@ -1,7 +1,8 @@
-package gdg.toulouse.svg;
+package gdg.toulouse.svg.template;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
+import gdg.toulouse.svg.utils.DocumentUtils;
 import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
@@ -14,9 +15,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.function.Function;
 
-import static gdg.toulouse.svg.DocumentUtils.getElementById;
-import static gdg.toulouse.svg.DocumentUtils.parse;
-import static gdg.toulouse.svg.DocumentUtils.transform;
+import static gdg.toulouse.svg.utils.Constants.$_NAME;
+import static gdg.toulouse.svg.utils.Constants.$_QRCODE;
+import static gdg.toulouse.svg.utils.Constants.$_SURNAME;
+import static gdg.toulouse.svg.utils.Constants.DATA_IMAGE_PNG_BASE64;
+import static gdg.toulouse.svg.utils.Constants.XLINK_HREF;
+import static gdg.toulouse.svg.utils.DocumentUtils.getElementById;
+import static gdg.toulouse.svg.utils.DocumentUtils.parse;
+import static gdg.toulouse.svg.utils.DocumentUtils.transform;
 
 public class SVGTemplateRepository implements TemplateRepository {
 
@@ -50,16 +56,16 @@ public class SVGTemplateRepository implements TemplateRepository {
 
     private Try<Document> performInstantiation(TemplateData templateData) {
         return DocumentUtils.clone(this.document).onSuccess(document -> {
-            getElementById(document, "$surname").
+            getElementById(document, $_SURNAME).
                     ifPresent(node -> DocumentUtils.setContent(node, templateData.getSurname()));
-            getElementById(document, "$name").
+            getElementById(document, $_NAME).
                     ifPresent(node -> DocumentUtils.setContent(node, templateData.getName()));
-            getElementById(document, "$qrcode").
+            getElementById(document, $_QRCODE).
                     ifPresent(node -> {
                         final String identity = templateData.getSurname() + " " + templateData.getName();
                         final String mail = templateData.getMail();
-                        final String image = "data:image/png;base64," + PNGQRCode.createFrom(identity, mail);
-                        DocumentUtils.setAttribute(node, "xlink:href", image);
+                        final String image = DATA_IMAGE_PNG_BASE64 + PNGQRCode.createFrom(identity, mail);
+                        DocumentUtils.setAttribute(node, XLINK_HREF, image);
                     });
         });
     }

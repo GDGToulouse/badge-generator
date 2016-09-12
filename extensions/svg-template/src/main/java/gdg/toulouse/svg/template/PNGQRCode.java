@@ -1,4 +1,4 @@
-package gdg.toulouse.svg;
+package gdg.toulouse.svg.template;
 
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.core.scheme.VCard;

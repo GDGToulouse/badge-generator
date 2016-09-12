@@ -1,4 +1,4 @@
-package gdg.toulouse.svg;
+package gdg.toulouse.svg.utils;
 
 import gdg.toulouse.data.Try;
 import org.w3c.dom.Document;
@@ -19,54 +19,42 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 
-class DocumentUtils {
+public class DocumentUtils {
 
     private static final String ID = "id";
 
-    static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
+    public static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
         try (FileInputStream stream = new FileInputStream(file)) {
             return parse(stream);
         }
     }
 
-    static Document parse(InputStream stream) throws ParserConfigurationException, IOException, SAXException {
+    public static Document parse(InputStream stream) throws ParserConfigurationException, IOException, SAXException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
     }
 
-    static Try<Document> clone(Document document) {
+    public static Try<Document> clone(Document document) {
         return Try.success(Document.class.cast(document.cloneNode(true)));
     }
 
-    static void transform(Document document, OutputStream stream) throws TransformerException {
+    public static void transform(Document document, OutputStream stream) throws TransformerException {
         TransformerFactory.newInstance().newTransformer().
                 transform(new DOMSource(document), new StreamResult(stream));
     }
 
-    static void removeChilds(Node element) {
-        while (element.hasChildNodes()) {
-            element.removeChild(element.getFirstChild());
-        }
-    }
-
-    static Optional<Node> getElementById(Node node, String value) {
+    public static Optional<Node> getElementById(Node node, String value) {
         return getElement(node, ID, value);
     }
 
-    static void setAttribute(Node node, String name, String value) {
-        if (node.getAttributes() == null) {
-            return;
-        }
-
-        final Node id = node.getAttributes().getNamedItem(name);
-
-        if (id == null) {
-            return;
-        }
-
-        id.setNodeValue(value);
+    public static void setAttribute(Node node, String name, String value) {
+        Optional.ofNullable(node.getAttributes()).flatMap(attributes ->
+                Optional.ofNullable(attributes.getNamedItem(name))
+        ).ifPresent(attribute ->
+                attribute.setNodeValue(value)
+        );
     }
 
-    static void setContent(Node node, String value) {
+    public static void setContent(Node node, String value) {
         removeChilds(node);
         node.setTextContent(value);
     }
@@ -74,6 +62,12 @@ class DocumentUtils {
     //
     // Private behaviors
     //
+
+    private static void removeChilds(Node element) {
+        while (element.hasChildNodes()) {
+            element.removeChild(element.getFirstChild());
+        }
+    }
 
     private static Optional<Node> getElement(Node node, String name, String value) {
         if (hasTheRequiredId(node, name, value)) {

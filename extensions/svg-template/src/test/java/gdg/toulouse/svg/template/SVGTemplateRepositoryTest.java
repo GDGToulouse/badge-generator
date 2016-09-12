@@ -1,6 +1,7 @@
-package gdg.toulouse.svg;
+package gdg.toulouse.svg.template;
 
 import gdg.toulouse.data.Try;
+import gdg.toulouse.svg.utils.DocumentUtils;
 import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;

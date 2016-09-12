@@ -1,4 +1,4 @@
-package gdg.toulouse.svg;
+package gdg.toulouse.svg.template;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
@@ -15,11 +15,11 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SVGPDFTemplateRepositoryTest {
+public class PDFTemplateRepositoryTest {
 
     @Test
     public void shouldReadSVGFile() throws Exception {
-        final TemplateRepository template = new SVGPDFTemplateRepository(givenSVGURL("test"));
+        final TemplateRepository template = new PDFTemplateRepository(givenSVGURL("test"));
         final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         assertThat(instance.isSuccess()).isTrue();
@@ -27,7 +27,7 @@ public class SVGPDFTemplateRepositoryTest {
 
     @Test
     public void shouldWritePDFFile() throws Exception {
-        final TemplateRepository template = new SVGPDFTemplateRepository(givenSVGURL("badge"));
+        final TemplateRepository template = new PDFTemplateRepository(givenSVGURL("badge"));
         final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         instance.onSuccess(templateInstance -> {

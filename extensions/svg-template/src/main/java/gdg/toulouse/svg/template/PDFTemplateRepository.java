@@ -1,4 +1,4 @@
-package gdg.toulouse.svg;
+package gdg.toulouse.svg.template;
 
 import gdg.toulouse.data.Try;
 import gdg.toulouse.data.Unit;
@@ -22,11 +22,11 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.function.Function;
 
-public class SVGPDFTemplateRepository implements TemplateRepository {
+public class PDFTemplateRepository implements TemplateRepository {
 
     private final SVGTemplateRepository svgTemplateRepository;
 
-    public SVGPDFTemplateRepository(URL resource) throws ParserConfigurationException, SAXException, IOException {
+    public PDFTemplateRepository(URL resource) throws ParserConfigurationException, SAXException, IOException {
         this.svgTemplateRepository = new SVGTemplateRepository(resource);
     }
 
