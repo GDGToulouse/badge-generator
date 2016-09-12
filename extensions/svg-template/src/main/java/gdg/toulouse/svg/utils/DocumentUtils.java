@@ -33,7 +33,7 @@ public class DocumentUtils {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
     }
 
-    public static Try<Document> clone(Document document) {
+    public static Try<Document> cloneDocument(Document document) {
         return Try.success(Document.class.cast(document.cloneNode(true)));
     }
 
