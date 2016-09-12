@@ -57,6 +57,13 @@ public class SVGTemplateRepository implements TemplateRepository {
                     element.setTextContent(keyValueEntry.getValue());
                 });
             });
+
+            getElementById(document, "$qrcode").ifPresent(node -> {
+                final String identity = map.get("$surname") + " " + map.get("$name");
+                final String mail = map.get("$mail");
+                final String image = "data:image/png;base64," + PNGQRCode.createFrom(identity, mail);
+                DocumentUtils.setAttribute(node, "xlink:href", image);
+            });
         });
     }
 }

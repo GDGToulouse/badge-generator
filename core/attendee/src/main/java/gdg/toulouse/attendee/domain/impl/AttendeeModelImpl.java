@@ -10,6 +10,7 @@ import gdg.toulouse.template.domain.TemplateModel;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import static gdg.toulouse.attendee.utils.Constants.COMPANY;
 import static gdg.toulouse.attendee.utils.Constants.MAIL;
@@ -41,7 +42,7 @@ class AttendeeModelImpl implements AttendeeModel {
     // Private behaviors
     //
 
-    private Try<AttendeeBadge> getAttendeeBadge(HashMap<String, String> parameters) {
+    private Try<AttendeeBadge> getAttendeeBadge(Map<String, String> parameters) {
         return templateModel.instantiate(parameters).map(AttendeeBadgeBuilder::create);
     }
 
@@ -58,6 +59,7 @@ class AttendeeModelImpl implements AttendeeModel {
         attendee.getTwitter().ifPresent(twitter -> {
             parameters.put(TWITTER, twitter);
         });
+
         return parameters;
     }
 }

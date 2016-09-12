@@ -58,7 +58,11 @@ public class SVGPDFTemplateRepositoryTest {
         return new HashMap<String, String>() {{
             this.put("$surname", "John");
             this.put("$name", "Doe");
+            this.put("$mail", "john.doe@acme.com");
         }};
     }
 
+    private double offset(String s) {
+        return 187.25 / (s.length()/2);
+    }
 }

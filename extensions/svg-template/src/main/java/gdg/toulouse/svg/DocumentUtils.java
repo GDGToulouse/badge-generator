@@ -52,6 +52,21 @@ class DocumentUtils {
         return getElement(node, ID, value);
     }
 
+    public static void setAttribute(Node node, String name, String value) {
+        if (node.getAttributes() == null) {
+            return;
+        }
+
+        final Node id = node.getAttributes().getNamedItem(name);
+
+        if (id == null) {
+            return;
+        }
+
+        id.setNodeValue(value);
+    }
+
+
     //
     // Private behaviors
     //
