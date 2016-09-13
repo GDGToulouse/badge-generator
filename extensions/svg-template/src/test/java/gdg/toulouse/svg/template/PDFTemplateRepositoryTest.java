@@ -7,9 +7,7 @@ import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 
@@ -19,7 +17,7 @@ public class PDFTemplateRepositoryTest {
 
     @Test
     public void shouldReadSVGFile() throws Exception {
-        final TemplateRepository template = new PDFTemplateRepository(givenSVGURL("test"));
+        final TemplateRepository template = new PDFTemplateRepository(givenSVGURL("badge"));
         final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
 
         assertThat(instance.isSuccess()).isTrue();
@@ -28,26 +26,21 @@ public class PDFTemplateRepositoryTest {
     @Test
     public void shouldWritePDFFile() throws Exception {
         final TemplateRepository template = new PDFTemplateRepository(givenSVGURL("badge"));
-        final Try<TemplateInstance> instance = template.getGenerator().apply(givenTemplateData());
+        final OutputStream stream = new FileOutputStream("/tmp/test.pdf");
 
-        instance.onSuccess(templateInstance -> {
-            final File file = new File("/tmp/test.pdf");
-            shouldDump(templateInstance, file).onFailure(throwable -> file.delete());
+        template.getGenerator().apply(givenTemplateData()).onSuccess(templateInstance -> {
+            shouldDump(templateInstance, stream);
         });
+
+        // TODO -- find the right way to test the generated PDF document
     }
 
     //
     // Private behaviors
     //
 
-    private Try<Unit> shouldDump(TemplateInstance templateInstance, File file) {
-        Try<Unit> dump;
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            dump = templateInstance.dump(outputStream);
-        } catch (IOException e) {
-            dump = Try.failure(e);
-        }
-        return dump;
+    private Try<Unit> shouldDump(TemplateInstance templateInstance, OutputStream outputStream) {
+        return templateInstance.dump(outputStream);
     }
 
     private URL givenSVGURL(String name) {
@@ -55,6 +48,6 @@ public class PDFTemplateRepositoryTest {
     }
 
     private TemplateData givenTemplateData() {
-        return new TemplateData("John", "Doe", "john.doe@acme.com", null,  null);
+        return new TemplateData("Arnold", "Van der Bruck", "john.doe@acme.com", null,  null);
     }
 }

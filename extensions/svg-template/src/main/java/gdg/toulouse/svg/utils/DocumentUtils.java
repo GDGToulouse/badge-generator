@@ -47,9 +47,7 @@ public class DocumentUtils {
     }
 
     public static void setAttribute(Node node, String name, String value) {
-        Optional.ofNullable(node.getAttributes()).flatMap(attributes ->
-                Optional.ofNullable(attributes.getNamedItem(name))
-        ).ifPresent(attribute ->
+        getAttributeNode(node, name).ifPresent(attribute ->
                 attribute.setNodeValue(value)
         );
     }
@@ -57,6 +55,10 @@ public class DocumentUtils {
     public static void setContent(Node node, String value) {
         removeChilds(node);
         node.setTextContent(value);
+    }
+
+    public static String getAttribute(Node node, String name) {
+        return getAttributeNode(node, name).map(Node::getNodeValue).orElse("");
     }
 
     //
@@ -94,18 +96,10 @@ public class DocumentUtils {
         return value.equals(getAttribute(node, name));
     }
 
-    private static String getAttribute(Node node, String name) {
-        if (node.getAttributes() == null) {
-            return "";
-        }
-
-        final Node id = node.getAttributes().getNamedItem(name);
-
-        if (id == null) {
-            return "";
-        }
-
-        return id.getNodeValue();
+    private static Optional<Node> getAttributeNode(Node node, String name) {
+        return Optional.ofNullable(node.getAttributes()).flatMap(attributes ->
+                Optional.ofNullable(attributes.getNamedItem(name))
+        );
     }
 
 }
