@@ -20,6 +20,6 @@ CPATH="$GENERATOR_HOME/lib/*:"
 # *--------------------------------------------------------------*
 
 COPTS=-Dgenerator.home=$GENERATOR_HOME
-GENERATOR_CLASS=gdg.toulouse.command.Main
+GENERATOR_CLASS=gdg.toulouse.interactive.Main
 
 exec $JAVA $COPTS -cp $CPATH $GENERATOR_CLASS $@

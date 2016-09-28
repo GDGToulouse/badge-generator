@@ -36,7 +36,7 @@ import static gdg.toulouse.svg.utils.DocumentUtils.transform;
 public class SVGTemplateRepository implements TemplateRepository {
 
     private static final String ROBOTO = "Roboto";
-    
+
     private final Document document;
 
     public SVGTemplateRepository(URL resource) throws IOException, ParserConfigurationException, SAXException {
@@ -71,11 +71,15 @@ public class SVGTemplateRepository implements TemplateRepository {
                 setContent(node, data.getSurname());
                 setAttribute(node, "x", String.valueOf(getOffset(data.getSurname(), 30)));
             });
+
             getElementById(document, NAME).ifPresent(node -> {
                 setContent(node, data.getName());
                 setAttribute(node, "x", String.valueOf(getOffset(data.getName(), 28)));
             });
-            getElementById(document, QRCODE).ifPresent(node -> setAttribute(node, XLINK_HREF, getQRCode(data)));
+
+            getElementById(document, QRCODE).ifPresent(node ->
+                    setAttribute(node, XLINK_HREF, getQRCode(data))
+            );
         });
     }
 
@@ -83,7 +87,7 @@ public class SVGTemplateRepository implements TemplateRepository {
         final double textInPixel = textSizeInPixel(s, fontInPixel);
         final double pageInpixel = pageSizeInPixel();
 
-        return pageInpixel/4 - textInPixel/2;
+        return pageInpixel / 4 - textInPixel / 2;
     }
 
     private double pageSizeInPixel() {
@@ -93,13 +97,10 @@ public class SVGTemplateRepository implements TemplateRepository {
     private double textSizeInPixel(String s, double fontInPixel) {
         final Font font = new Font(ROBOTO, Font.PLAIN, (int) fontInPixel);
         if (!font.getFamily().equals(ROBOTO)) {
-            Logger.getAnonymousLogger().log(Level.WARNING,
-                    "Text size estimated using font " +
-                    font.getFamily() +
-                    " - (1) Download Roboto or (2) Modify the template"
-            );
+            Logger.getAnonymousLogger().log(Level.WARNING, getMessageWhenFontIsMissing(font));
         }
-        final FontMetrics metrics = new FontMetrics(font) {};
+        final FontMetrics metrics = new FontMetrics(font) {
+        };
         return metrics.getStringBounds(s, null).getWidth();
     }
 
@@ -108,5 +109,11 @@ public class SVGTemplateRepository implements TemplateRepository {
         final String mail = data.getMail();
 
         return DATA_IMAGE_PNG_BASE64 + PNGQRCode.createFrom(identity, mail);
+    }
+
+    private String getMessageWhenFontIsMissing(Font font) {
+        return "Text size estimated using font " +
+                font.getFamily() +
+                " - (1) Download Roboto or (2) Modify the template";
     }
 }

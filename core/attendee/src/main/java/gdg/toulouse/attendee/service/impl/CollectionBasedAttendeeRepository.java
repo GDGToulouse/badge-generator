@@ -20,18 +20,18 @@ public class CollectionBasedAttendeeRepository implements AttendeeRepository {
     }
 
     @Override
-    public Collection<String> getAttendeesMail() {
+    public Collection<String> getAttendeesIdentifiers() {
         return this.attendees.stream().
-                map(Attendee::getMail).
+                map(Attendee::getIdentifier).
                 collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
-    public Optional<Attendee> findByMail(String mail) {
-        Objects.requireNonNull(mail, "Mail");
+    public Optional<Attendee> findByIdentifier(String identifier) {
+        Objects.requireNonNull(identifier, "Identitier");
 
         return this.attendees.stream().
-                filter(attendee -> attendee.getMail().equals(mail)).
+                filter(attendee -> attendee.getIdentifier().equals(identifier)).
                 findFirst();
     }
 }

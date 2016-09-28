@@ -16,7 +16,7 @@
         <module>commons</module>
         <module>template</module>
         <module>attendee</module>
-        <module>interactive</module>
+        <module>command</module>
     </modules>
 
 </project>

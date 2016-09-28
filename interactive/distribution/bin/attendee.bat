@@ -18,7 +18,7 @@ set CPATH="%GENERATOR_HOME%\lib\*;"
 REM *--------------------------------------------------------------*
 
 set COPTS=-Dgenerator.home=%GENERATOR_HOME%
-set GENERATOR_CLASS=gdg.toulouse.command.Main
+set GENERATOR_CLASS=gdg.toulouse.interactive.Main
 
 %JAVA% %COPTS% -cp %CPATH% %GENERATOR_CLASS% %*
 

@@ -10,6 +10,7 @@ import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.domain.TemplateModel;
 
 import java.util.Collection;
+import java.util.Optional;
 
 class AttendeeModelImpl implements AttendeeModel {
 
@@ -22,11 +23,17 @@ class AttendeeModelImpl implements AttendeeModel {
     }
 
     public Collection<String> getAttendees() {
-        return attendeeRepository.getAttendeesMail();
+        return attendeeRepository.getAttendeesIdentifiers();
     }
 
+    @Override
+    public Optional<Attendee> getAttendee(String identifier) {
+        return attendeeRepository.findByIdentifier(identifier);
+    }
+
+    @Override
     public Try<AttendeeBadge> getAttendeeBadge(String identifier) {
-        return attendeeRepository.findByMail(identifier).
+        return attendeeRepository.findByIdentifier(identifier).
                 map(attendee -> getAttendeeBadge(getTemplateDataFromAttendee(attendee))).
                 orElseGet(() -> Try.failure(new AttendeeNotFoundException(identifier)));
     }

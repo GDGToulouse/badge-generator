@@ -9,8 +9,8 @@ import java.util.Optional;
 @ServiceInterface
 public interface AttendeeRepository {
 
-    Collection<String> getAttendeesMail();
+    Collection<String> getAttendeesIdentifiers();
 
-    Optional<Attendee> findByMail(String mail);
+    Optional<Attendee> findByIdentifier(String identifier);
 
 }

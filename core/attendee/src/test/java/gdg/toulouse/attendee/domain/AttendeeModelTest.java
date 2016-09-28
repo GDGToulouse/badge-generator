@@ -28,14 +28,28 @@ public class AttendeeModelTest {
     }
 
     @Test
-    public void shouldRetrieveAnAttenBadge() throws Exception {
+    public void shouldRetrieveAnAttendee() throws Exception {
+        final AttendeeModel attendeeModel = create(new AttendeeRepositoryTest(), new TemplateModelTest());
+
+        assertThat(attendeeModel.getAttendee("a.b@c.d").isPresent()).isTrue();
+    }
+
+    @Test
+    public void shouldNotRetrieveAnAttendee() throws Exception {
+        final AttendeeModel attendeeModel = create(new AttendeeRepositoryTest(), new TemplateModelTest());
+
+        assertThat(attendeeModel.getAttendee("a.b@c.bar").isPresent()).isFalse();
+    }
+
+    @Test
+    public void shouldRetrieveAnAttendeeBadge() throws Exception {
         final AttendeeModel attendeeModel = create(new AttendeeRepositoryTest(), new TemplateModelTest());
 
         assertThat(attendeeModel.getAttendeeBadge("a.b@c.d").isSuccess()).isTrue();
     }
 
     @Test
-    public void shouldNotRetrieveAnAttenBadge() throws Exception {
+    public void shouldNotRetrieveAnAttendeeBadge() throws Exception {
         final AttendeeModel attendeeModel = create(new AttendeeRepositoryTest(), new TemplateModelTest());
 
         assertThat(attendeeModel.getAttendeeBadge("a.b@c.bar").isSuccess()).isFalse();
@@ -51,18 +65,18 @@ public class AttendeeModelTest {
 
         AttendeeRepositoryTest() {
             this.attendees = new ArrayList<>();
-            this.attendees.add(new Attendee("A", "B", "a.b@c.d", null, null));
-            this.attendees.add(new Attendee("E", "F", "e.f@g.h", null, null));
+            this.attendees.add(new Attendee("a.b@c.d", "A", "B", "a.b@c.d", null, null));
+            this.attendees.add(new Attendee("e.f@g.h", "E", "F", "e.f@g.h", null, null));
         }
 
         @Override
-        public Collection<String> getAttendeesMail() {
+        public Collection<String> getAttendeesIdentifiers() {
             return this.attendees.stream().map(Attendee::getMail).collect(Collectors.toList());
         }
 
         @Override
-        public Optional<Attendee> findByMail(String mail) {
-            return this.attendees.stream().filter(attendee -> attendee.getMail().equals(mail)).findFirst();
+        public Optional<Attendee> findByIdentifier(String identifier) {
+            return this.attendees.stream().filter(attendee -> attendee.getMail().equals(identifier)).findFirst();
         }
     }
 

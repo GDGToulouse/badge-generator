@@ -9,13 +9,15 @@ import static java.util.Objects.requireNonNull;
 @ValueObject
 public class Attendee {
 
+    private final String identifier;
     private final String surname;
     private final String name;
     private final String mail;
     private final String company;
     private final String twitter;
 
-    public Attendee(String surname, String name, String mail, String company, String twitter) {
+    public Attendee(String identifier, String surname, String name, String mail, String company, String twitter) {
+        this.identifier = identifier;
         requireNonNull(surname, "Surname");
         requireNonNull(surname, "name");
         requireNonNull(surname, "mail");
@@ -25,6 +27,10 @@ public class Attendee {
         this.mail = mail;
         this.company = company;
         this.twitter = twitter;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public String getSurname() {
