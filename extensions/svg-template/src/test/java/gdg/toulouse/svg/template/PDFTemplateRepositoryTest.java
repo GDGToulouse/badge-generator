@@ -48,6 +48,6 @@ public class PDFTemplateRepositoryTest {
     }
 
     private TemplateData givenTemplateData() {
-        return new TemplateData("Arnold", "Van der Bruck", "john.doe@acme.com", null,  null);
+        return new TemplateData("Even", "Plaindoux", "e.plaindoux@orange.fr", null,  null);
     }
 }

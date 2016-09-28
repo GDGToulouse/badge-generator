@@ -38,8 +38,7 @@ public class DocumentUtils {
     }
 
     public static void transform(Document document, OutputStream stream) throws TransformerException {
-        TransformerFactory.newInstance().newTransformer().
-                transform(new DOMSource(document), new StreamResult(stream));
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(stream));
     }
 
     public static Optional<Node> getElementById(Node node, String value) {
@@ -47,9 +46,7 @@ public class DocumentUtils {
     }
 
     public static void setAttribute(Node node, String name, String value) {
-        getAttributeNode(node, name).ifPresent(attribute ->
-                attribute.setNodeValue(value)
-        );
+        getAttributeNode(node, name).ifPresent(attribute -> attribute.setNodeValue(value));
     }
 
     public static void setContent(Node node, String value) {

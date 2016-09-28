@@ -1,6 +1,7 @@
 package gdg.toulouse.billetweb;
 
 import gdg.toulouse.attendee.data.Attendee;
+import gdg.toulouse.billetweb.codec.BilletWebCSVDecoder;
 import org.junit.Test;
 
 import java.io.IOException;

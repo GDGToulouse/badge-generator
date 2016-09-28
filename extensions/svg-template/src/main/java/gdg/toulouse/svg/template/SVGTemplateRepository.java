@@ -35,6 +35,8 @@ import static gdg.toulouse.svg.utils.DocumentUtils.transform;
 
 public class SVGTemplateRepository implements TemplateRepository {
 
+    private static final String ROBOTO = "Roboto";
+    
     private final Document document;
 
     public SVGTemplateRepository(URL resource) throws IOException, ParserConfigurationException, SAXException {
@@ -89,8 +91,8 @@ public class SVGTemplateRepository implements TemplateRepository {
     }
 
     private double textSizeInPixel(String s, double fontInPixel) {
-        final Font font = new Font("Roboto", Font.PLAIN, (int) fontInPixel);
-        if (!font.getFamily().equals("Roboto")) {
+        final Font font = new Font(ROBOTO, Font.PLAIN, (int) fontInPixel);
+        if (!font.getFamily().equals(ROBOTO)) {
             Logger.getAnonymousLogger().log(Level.WARNING,
                     "Text size estimated using font " +
                     font.getFamily() +

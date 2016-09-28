@@ -1,0 +1,4 @@
+argument.name=svg-pdf
+argument.description=SVG template specification for PDF generation
+command.type=template
+command.class=gdg.toulouse.svg.command.PDFSVGTemplateCommand

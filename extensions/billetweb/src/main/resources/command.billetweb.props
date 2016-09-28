@@ -1,0 +1,6 @@
+argument.name=bw
+argument.description=Billet Web CSV Attendee repository
+
+[command]
+command.type=attendee
+command.class=gdg.toulouse.billetweb.command.BilletWebCSVCommand
