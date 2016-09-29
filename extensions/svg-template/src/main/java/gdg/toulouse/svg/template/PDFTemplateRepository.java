@@ -35,8 +35,8 @@ public class PDFTemplateRepository implements TemplateRepository {
         return this::getInstance;
     }
 
-    private Try<TemplateInstance> getInstance(TemplateData templateData) {
-        final Try<TemplateInstance> templateInstanceTry = svgTemplateRepository.getGenerator().apply(templateData);
+    private Try<TemplateInstance> getInstance(TemplateData data) {
+        final Try<TemplateInstance> templateInstanceTry = svgTemplateRepository.getGenerator().apply(data);
         return templateInstanceTry.flatmap(templateInstance -> Try.success(stream -> {
             try {
                 final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

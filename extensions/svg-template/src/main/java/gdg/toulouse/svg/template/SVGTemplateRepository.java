@@ -105,10 +105,7 @@ public class SVGTemplateRepository implements TemplateRepository {
     }
 
     private String getQRCode(TemplateData data) {
-        final String identity = data.getSurname() + " " + data.getName();
-        final String mail = data.getMail();
-
-        return DATA_IMAGE_PNG_BASE64 + PNGQRCode.createFrom(identity, mail);
+        return DATA_IMAGE_PNG_BASE64 + PNGQRCode.createFrom(data);
     }
 
     private String getMessageWhenFontIsMissing(Font font) {
