@@ -57,11 +57,14 @@ $> unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-windo
 
 ### Generate
 
-Then you have to create or copy a badge. A sample is given in the data directory like `badge.svg`.
+Then you have to create or copy a badge template. A DevFest Toulouse is availale in the `document/2016` directory.
 
 ```shell
-$> ./bin/attendee.sh 
+$> ./bin/attendee.sh
 usage: attendee
+ badge ...
+$> ./bin/attendee.sh badge 
+usage: attendee badge
  -bw <arg>        Billet Web CSV Attendee repository
  -o <arg>         Output directory
  -svg_pdf <arg>   SVG template modelisation and PDF generation
