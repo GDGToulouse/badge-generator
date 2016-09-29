@@ -1,11 +1,11 @@
 package gdg.toulouse.command.command;
 
-public class CommandDeclaration<E extends Command<?>> {
+public class CommandDeclaration<C extends Command<?>> {
     private final String name;
     private final String description;
-    private final E command;
+    private final C command;
 
-    public CommandDeclaration(String name, String description, E command) {
+    public CommandDeclaration(String name, String description, C command) {
         this.name = name;
         this.description = description;
         this.command = command;
@@ -19,7 +19,7 @@ public class CommandDeclaration<E extends Command<?>> {
         return description;
     }
 
-    public E getCommand() {
+    public C getCommand() {
         return command;
     }
 }
