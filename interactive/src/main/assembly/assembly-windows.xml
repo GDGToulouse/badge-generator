@@ -33,7 +33,7 @@
             </includes>
         </fileSet>
     </fileSets>
-    <includeBaseDirectory>false</includeBaseDirectory>
+    <includeBaseDirectory>true</includeBaseDirectory>
     <dependencySets>
         <dependencySet>
             <outputDirectory>/lib/</outputDirectory>
