@@ -10,7 +10,7 @@ DevFest.
 First clone this project since it's not provided using Maven central.
 
 ```shell
-$> git clone https://github.com/GDGToulouse/badge-generator.git
+$ git clone https://github.com/GDGToulouse/badge-generator.git
 ```
 
 ### Build
@@ -18,7 +18,7 @@ $> git clone https://github.com/GDGToulouse/badge-generator.git
 Second build the project using Maven command line.
 
 ```shell
-$> maven package
+$ maven package
 ...
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary:
@@ -48,11 +48,11 @@ You can now install the badge generator somewhere.
 
 For unix:
 ```shell
-$> unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-unix.zip 
+$ unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-unix.zip 
 ```
 For windows:
 ```shell
-$> unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-windows.zip 
+$ unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-windows.zip 
 ```
 
 ### Generate
@@ -60,10 +60,10 @@ $> unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-windo
 Then you have to create or copy a badge template. A DevFest Toulouse is availale in the `document/2016` directory.
 
 ```shell
-$> ./bin/attendee.sh
+$ ./bin/attendee.sh
 usage: attendee
  badge ...
-$> ./bin/attendee.sh badge 
+$ ./bin/attendee.sh badge 
 usage: attendee badge
  -bw <arg>        Billet Web CSV Attendee repository
  -o <arg>         Output directory
