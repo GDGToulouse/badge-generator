@@ -57,8 +57,7 @@ $ unzip <badge-generator-dir>/interactive/target/interactive-1.0-SNAPSHOT-window
 
 ### Generate
 
-Then you have to create or copy a badge template. A model designed for the DevFest Toulouse is 
-availale in the `document/2016` directory.
+Then you have to create or copy a badge template. A model designed for the DevFest Toulouse is availale in the `document/2016` directory.
 
 ```shell
 $ ./bin/attendee.sh
