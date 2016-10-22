@@ -8,6 +8,6 @@ import gdg.toulouse.template.service.TemplateInstance;
 @ApplicationInterface
 public interface TemplateModel {
 
-    Try<TemplateInstance> instantiate(TemplateData templateData);
+    Try<TemplateInstance> instantiate(TemplateData[] templateData);
 
 }

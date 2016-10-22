@@ -47,7 +47,7 @@ public class PDFTemplateRepositoryTest {
         return SVGTemplateRepositoryTest.class.getResource(String.format("/%s.svg", name));
     }
 
-    private TemplateData givenTemplateData() {
-        return new TemplateData("Even", "Plaindoux", "e.plaindoux@orange.fr", null,  null);
+    private TemplateData[] givenTemplateData() {
+        return new TemplateData[] { new TemplateData("John", "Doe", "john.doe@acme.com", null,  null) };
     }
 }

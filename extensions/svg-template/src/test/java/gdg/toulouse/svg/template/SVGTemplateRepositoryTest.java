@@ -47,8 +47,8 @@ public class SVGTemplateRepositoryTest {
     }
 
 
-    private TemplateData givenTemplateData() {
-        return new TemplateData("John", "Doe", "john.doe@acme.com", null,  null);
+    private TemplateData[] givenTemplateData() {
+        return new TemplateData[]{new TemplateData("John", "Doe", "john.doe@acme.com", null, null)};
     }
 
 }

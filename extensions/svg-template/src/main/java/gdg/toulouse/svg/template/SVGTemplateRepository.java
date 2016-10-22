@@ -46,7 +46,7 @@ public class SVGTemplateRepository implements TemplateRepository {
     }
 
     @Override
-    public Function<TemplateData, Try<TemplateInstance>> getGenerator() {
+    public Function<TemplateData[], Try<TemplateInstance>> getGenerator() {
         return this::getInstance;
     }
 
@@ -54,7 +54,7 @@ public class SVGTemplateRepository implements TemplateRepository {
     // Private behaviors
     //
 
-    private Try<TemplateInstance> getInstance(TemplateData data) {
+    private Try<TemplateInstance> getInstance(TemplateData[] data) {
         return performInstantiation(data).map(document -> stream -> {
             try {
                 transform(document, stream);
@@ -65,21 +65,25 @@ public class SVGTemplateRepository implements TemplateRepository {
         });
     }
 
-    private Try<Document> performInstantiation(TemplateData data) {
+    private Try<Document> performInstantiation(TemplateData[] data) {
         return cloneDocument(this.document).onSuccess(document -> {
-            getElementById(document, SURNAME).ifPresent(node -> {
-                setContent(node, data.getSurname());
-                setAttribute(node, "x", String.valueOf(getOffset(data.getSurname(), 30)));
-            });
+            for (int i = 0; i < data.length; i++) {
+                final TemplateData singleData = data[i];
 
-            getElementById(document, NAME).ifPresent(node -> {
-                setContent(node, data.getName());
-                setAttribute(node, "x", String.valueOf(getOffset(data.getName(), 28)));
-            });
+                getElementById(document, SURNAME + i).ifPresent(node -> {
+                    setContent(node, singleData.getSurname());
+                    setAttribute(node, "x", String.valueOf(getOffset(singleData.getSurname(), 18)));
+                });
 
-            getElementById(document, QRCODE).ifPresent(node ->
-                    setAttribute(node, XLINK_HREF, getQRCode(data))
-            );
+                getElementById(document, NAME + i).ifPresent(node -> {
+                    setContent(node, singleData.getName());
+                    setAttribute(node, "x", String.valueOf(getOffset(singleData.getName(), 18)));
+                });
+
+                getElementById(document, QRCODE + i).ifPresent(node ->
+                        setAttribute(node, XLINK_HREF, getQRCode(singleData))
+                );
+            }
         });
     }
 

@@ -11,7 +11,7 @@ public final class Main {
     public static void main(String[] args) {
 
         final Map<String, Action> actions = new HashMap<>();
-        actions.put("badge", new Badge());
+        actions.put("badge", new Badges());
 
         if (args.length < 1) {
             System.exit(1);

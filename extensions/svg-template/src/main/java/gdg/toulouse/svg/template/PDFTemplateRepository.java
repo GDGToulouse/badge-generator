@@ -31,11 +31,11 @@ public class PDFTemplateRepository implements TemplateRepository {
     }
 
     @Override
-    public Function<TemplateData, Try<TemplateInstance>> getGenerator() {
+    public Function<TemplateData[], Try<TemplateInstance>> getGenerator() {
         return this::getInstance;
     }
 
-    private Try<TemplateInstance> getInstance(TemplateData data) {
+    private Try<TemplateInstance> getInstance(TemplateData[] data) {
         final Try<TemplateInstance> templateInstanceTry = svgTemplateRepository.getGenerator().apply(data);
         return templateInstanceTry.flatmap(templateInstance -> Try.success(stream -> {
             try {

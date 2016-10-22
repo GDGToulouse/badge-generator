@@ -14,11 +14,10 @@ public final class AttendeeModelBuilder {
         // prevent useless construction
     }
 
-    public static AttendeeModel create(AttendeeRepository attendeeRepository, TemplateModel templateModel) {
+    public static AttendeeModel create(AttendeeRepository attendeeRepository) {
         requireNonNull(attendeeRepository, "Attendee Repository");
-        requireNonNull(templateModel, "Template Model");
 
-        return new AttendeeModelImpl(attendeeRepository, templateModel);
+        return new AttendeeModelImpl(attendeeRepository);
     }
 
 }

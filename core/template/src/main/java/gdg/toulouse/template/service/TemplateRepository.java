@@ -9,6 +9,6 @@ import java.util.function.Function;
 @ServiceInterface
 public interface TemplateRepository {
 
-    Function<TemplateData, Try<TemplateInstance>> getGenerator();
+    Function<TemplateData[], Try<TemplateInstance>> getGenerator();
 
 }
