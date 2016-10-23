@@ -8,6 +8,7 @@ import gdg.toulouse.template.service.TemplateRepository;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,9 @@ public class SVGTemplateRepositoryTest {
         instance.success().dump(stream);
         stream.close();
 
+        instance.success().dump(new FileOutputStream("/tmp/test.svg"));
+        stream.close();
+
         final ByteArrayOutputStream expect = new ByteArrayOutputStream();
         DocumentUtils.transform(DocumentUtils.parse(givenSVGURL("result").openStream()), expect);
         expect.close();
@@ -48,7 +52,7 @@ public class SVGTemplateRepositoryTest {
 
 
     private TemplateData[] givenTemplateData() {
-        return new TemplateData[]{new TemplateData("John", "Doe", "john.doe@acme.com", null, null)};
+        return new TemplateData[]{new TemplateData("John", "Doe", "R", "john.doe@acme.com", null, null)};
     }
 
 }

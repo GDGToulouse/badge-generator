@@ -77,18 +77,20 @@ public final class Badges implements Action {
                 filter(Optional::isPresent).
                 map(Optional::get).
                 map(this::getTemplateDataFromAttendee).
+                sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).
                 collect(Collectors.toList());
 
         final int[] idx = {0};
-
-        split(attendees, numberOfAttendeePerPage).forEach(data ->
-                getBadge(templateModel, data.toArray(new TemplateData[0])).onSuccess(badge -> {
-                    try (FileOutputStream stream = getFileOutputStream(outputDirectory, "badge-" + idx[0]++)) {
-                        badge.generate(stream);
-                    } catch (IOException e) {
-                        e.printStackTrace(); // TODO(didier) manage this error
-                    }
-                })
+        split(attendees, numberOfAttendeePerPage).forEach(data -> {
+            System.err.println("making badge " + idx[0]);
+                    getBadge(templateModel, data.toArray(new TemplateData[0])).onSuccess(badge -> {
+                        try (FileOutputStream stream = getFileOutputStream(outputDirectory, "badge-" + idx[0]++)) {
+                            badge.generate(stream);
+                        } catch (IOException e) {
+                            e.printStackTrace(); // TODO(didier) manage this error
+                        }
+                    });
+                }
         );
     }
 
@@ -100,6 +102,7 @@ public final class Badges implements Action {
         return new TemplateData(
                 attendee.getSurname(),
                 attendee.getName(),
+                attendee.getRole(),
                 attendee.getMail(),
                 attendee.getCompany().orElse(null),
                 attendee.getTwitter().orElse(null));

@@ -6,6 +6,7 @@ import gdg.toulouse.template.data.TemplateData;
 import gdg.toulouse.template.service.TemplateInstance;
 import gdg.toulouse.template.service.TemplateRepository;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,14 +20,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static gdg.toulouse.svg.utils.Constants.DATA_IMAGE_PNG_BASE64;
-import static gdg.toulouse.svg.utils.Constants.DPI_X;
-import static gdg.toulouse.svg.utils.Constants.INCH_IN_CM;
 import static gdg.toulouse.svg.utils.Constants.NAME;
 import static gdg.toulouse.svg.utils.Constants.QRCODE;
+import static gdg.toulouse.svg.utils.Constants.ROLE;
 import static gdg.toulouse.svg.utils.Constants.SURNAME;
-import static gdg.toulouse.svg.utils.Constants.WIDTH_CM;
 import static gdg.toulouse.svg.utils.Constants.XLINK_HREF;
 import static gdg.toulouse.svg.utils.DocumentUtils.cloneDocument;
+import static gdg.toulouse.svg.utils.DocumentUtils.getAttribute;
 import static gdg.toulouse.svg.utils.DocumentUtils.getElementById;
 import static gdg.toulouse.svg.utils.DocumentUtils.parse;
 import static gdg.toulouse.svg.utils.DocumentUtils.setAttribute;
@@ -68,43 +68,45 @@ public class SVGTemplateRepository implements TemplateRepository {
     private Try<Document> performInstantiation(TemplateData[] data) {
         return cloneDocument(this.document).onSuccess(document -> {
             for (int i = 0; i < data.length; i++) {
-                final TemplateData singleData = data[i];
+                final TemplateData current = data[i];
 
-                getElementById(document, SURNAME + i).ifPresent(node -> {
-                    setContent(node, singleData.getSurname());
-                    setAttribute(node, "x", String.valueOf(getOffset(singleData.getSurname(), 18)));
-                });
-
-                getElementById(document, NAME + i).ifPresent(node -> {
-                    setContent(node, singleData.getName());
-                    setAttribute(node, "x", String.valueOf(getOffset(singleData.getName(), 18)));
-                });
-
-                getElementById(document, QRCODE + i).ifPresent(node ->
-                        setAttribute(node, XLINK_HREF, getQRCode(singleData))
-                );
+                getElementById(document, SURNAME + i).ifPresent(node -> setEntry(node, current.getSurname(), 18));
+                getElementById(document, NAME + i).ifPresent(node -> setEntry(node, current.getName().toUpperCase(), 18));
+                getElementById(document, ROLE + i).ifPresent(node -> setEntry(node, getRole(current.getRole()), 16));
+                getElementById(document, QRCODE + i).ifPresent(node -> setAttribute(node, XLINK_HREF, getQRCode(current)));
             }
         });
     }
 
-    private double getOffset(String s, double fontInPixel) {
-        final double textInPixel = textSizeInPixel(s, fontInPixel);
-        final double pageInpixel = pageSizeInPixel();
+    private String getRole(String role) {
+        if (role.toLowerCase().trim().startsWith("tarif normal")) {
+            return "";
+        }
 
-        return pageInpixel / 4 - textInPixel / 2;
+        return role;
     }
 
-    private double pageSizeInPixel() {
-        return WIDTH_CM * DPI_X / INCH_IN_CM;
+    private void setEntry(Node node, String value, int fontInPixel) {
+        final double x = Double.parseDouble(getAttribute(node, "x"));
+        final double s = pixelToMM(textSizeInPixel(value, fontInPixel));
+        setAttribute(node, "x", String.valueOf(x - s / 2.0));
+        setContent(node, value);
     }
 
-    private double textSizeInPixel(String s, double fontInPixel) {
-        final Font font = new Font(ROBOTO, Font.PLAIN, (int) fontInPixel);
+    private double pixelToMM(double pixel) {
+        return pixel * 25.4 / 90; // (didier) BAD SMELL TO BE FIXED ASAP
+    }
+
+    private double textSizeInPixel(String s, int fontInPixel) {
+        final Font font = new Font(ROBOTO, Font.PLAIN, fontInPixel);
+
         if (!font.getFamily().equals(ROBOTO)) {
             Logger.getAnonymousLogger().log(Level.WARNING, getMessageWhenFontIsMissing(font));
         }
+
         final FontMetrics metrics = new FontMetrics(font) {
         };
+
         return metrics.getStringBounds(s, null).getWidth();
     }
 

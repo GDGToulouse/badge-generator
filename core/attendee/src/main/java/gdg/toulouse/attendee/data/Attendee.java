@@ -12,18 +12,20 @@ public class Attendee {
     private final String identifier;
     private final String surname;
     private final String name;
+    private final String role;
     private final String mail;
     private final String company;
     private final String twitter;
 
-    public Attendee(String identifier, String surname, String name, String mail, String company, String twitter) {
-        this.identifier = identifier;
+    public Attendee(String identifier, String surname, String name, String role, String mail, String company, String twitter) {
         requireNonNull(surname, "Surname");
         requireNonNull(surname, "name");
         requireNonNull(surname, "mail");
 
-        this.surname = surname;
-        this.name = name;
+        this.identifier = identifier;
+        this.surname = surname.trim();
+        this.name = name.trim();
+        this.role = role.trim();
         this.mail = mail;
         this.company = company;
         this.twitter = twitter;
@@ -43,6 +45,10 @@ public class Attendee {
 
     public String getMail() {
         return mail;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public Optional<String> getCompany() {

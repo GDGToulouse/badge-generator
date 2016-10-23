@@ -93,10 +93,9 @@ public class DocumentUtils {
         return value.equals(getAttribute(node, name));
     }
 
-    private static Optional<Node> getAttributeNode(Node node, String name) {
+    public static Optional<Node> getAttributeNode(Node node, String name) {
         return Optional.ofNullable(node.getAttributes()).flatMap(attributes ->
                 Optional.ofNullable(attributes.getNamedItem(name))
         );
     }
-
 }

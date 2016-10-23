@@ -45,8 +45,8 @@ public class AttendeeModelTest {
 
         AttendeeRepositoryTest() {
             this.attendees = new ArrayList<>();
-            this.attendees.add(new Attendee("a.b@c.d", "A", "B", "a.b@c.d", null, null));
-            this.attendees.add(new Attendee("e.f@g.h", "E", "F", "e.f@g.h", null, null));
+            this.attendees.add(new Attendee("a.b@c.d", "A", "B", "R", "a.b@c.d", null, null));
+            this.attendees.add(new Attendee("e.f@g.h", "E", "F", "R", "e.f@g.h", null, null));
         }
 
         @Override

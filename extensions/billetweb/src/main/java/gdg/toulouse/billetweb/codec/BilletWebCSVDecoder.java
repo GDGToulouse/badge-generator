@@ -21,6 +21,7 @@ public class BilletWebCSVDecoder {
     private static final String BILLET = "Billet";
     private static String SURNAME = "Prénom";
     private static String NAME = "Nom";
+    private static String ROLE = "Tarif";
     private static String MAIL = "E-mail";
 
     public static List<Attendee> getAttendeesFromStream(InputStream stream) throws IOException {
@@ -32,11 +33,12 @@ public class BilletWebCSVDecoder {
             final int identifier = attributeNames.indexOf(BILLET);
             final int surname = attributeNames.indexOf(SURNAME);
             final int name = attributeNames.indexOf(NAME);
+            final int role = attributeNames.indexOf(ROLE);
             final int mail = attributeNames.indexOf(MAIL);
 
             return lines.stream().
                     map(BilletWebCSVDecoder::getTermsFromLine).
-                    map(s -> getAttendee(identifier, surname, name, mail, s)).
+                    map(s -> getAttendee(identifier, surname, name, role, mail, s)).
                     filter(getValidAttendee()).
                     collect(Collectors.toList());
 
@@ -56,7 +58,7 @@ public class BilletWebCSVDecoder {
         return Arrays.asList(line.split("\t"));
     }
 
-    private static Attendee getAttendee(int identifier, int surname, int name, int mail, List<String> s) {
+    private static Attendee getAttendee(int identifier, int surname, int name, int role, int mail, List<String> s) {
         final Function<Integer, String> extract = (i) -> {
             if (i > -1) {
                 return s.get(i);
@@ -65,7 +67,7 @@ public class BilletWebCSVDecoder {
             }
         };
 
-        return new Attendee(extract.apply(identifier), extract.apply(surname), extract.apply(name), extract.apply(mail), null, null);
+        return new Attendee(extract.apply(identifier), extract.apply(surname), extract.apply(name), extract.apply(role), extract.apply(mail), null, null);
     }
 
     private static Predicate<Attendee> getValidAttendee() {
