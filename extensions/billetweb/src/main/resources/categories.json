@@ -1,0 +1,36 @@
+{
+  "Bénévole": {
+    "label": "Bénévole",
+    "color": "#123456"
+  },
+  "Invitation communauté partenaire": {
+    "label": "Communauté Partenaire",
+    "color": "#345678"
+  },
+  "Organisateur": {
+    "label": "Organisateur",
+    "color": "#56789A"
+  },
+  "Speaker": {
+    "label": "Speaker",
+    "color": "#345678"
+  },
+  "Sponsor": {
+    "label": "Sponsor",
+    ,
+    "color": "#345678"
+  },
+  "Sponsor Toulouse Métropole": {
+    "label": "Sponsor",
+    ,
+    "color": "#345678"
+  },
+  "Tarif normal": {
+    "label": "",
+    "color": "#FFFFFF"
+  },
+  "Tarif normal caché": {
+    "label": "",
+    "color": "#FFFFFF"
+  }
+}

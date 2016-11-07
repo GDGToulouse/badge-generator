@@ -19,12 +19,13 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static gdg.toulouse.svg.utils.Constants.DATA_IMAGE_PNG_BASE64;
-import static gdg.toulouse.svg.utils.Constants.NAME;
-import static gdg.toulouse.svg.utils.Constants.QRCODE;
-import static gdg.toulouse.svg.utils.Constants.ROLE;
-import static gdg.toulouse.svg.utils.Constants.SURNAME;
-import static gdg.toulouse.svg.utils.Constants.XLINK_HREF;
+import static gdg.toulouse.svg.template.Constants.DATA_IMAGE_PNG_BASE64;
+import static gdg.toulouse.svg.template.Constants.NAME;
+import static gdg.toulouse.svg.template.Constants.QRCODE;
+import static gdg.toulouse.svg.template.Constants.ROLE;
+import static gdg.toulouse.svg.template.Constants.ROLECOLOR;
+import static gdg.toulouse.svg.template.Constants.SURNAME;
+import static gdg.toulouse.svg.template.Constants.XLINK_HREF;
 import static gdg.toulouse.svg.utils.DocumentUtils.cloneDocument;
 import static gdg.toulouse.svg.utils.DocumentUtils.getAttribute;
 import static gdg.toulouse.svg.utils.DocumentUtils.getElementById;
@@ -73,17 +74,48 @@ public class SVGTemplateRepository implements TemplateRepository {
                 getElementById(document, SURNAME + i).ifPresent(node -> setEntry(node, current.getSurname(), 18));
                 getElementById(document, NAME + i).ifPresent(node -> setEntry(node, current.getName().toUpperCase(), 18));
                 getElementById(document, ROLE + i).ifPresent(node -> setEntry(node, getRole(current.getRole()), 16));
+                getElementById(document, ROLECOLOR + i).ifPresent(node -> setAttribute(node, "style", getAttribute(node, "style").replace("$color", getColor(current.getRole()))));
                 getElementById(document, QRCODE + i).ifPresent(node -> setAttribute(node, XLINK_HREF, getQRCode(current)));
             }
         });
     }
 
+    // TODO(didier) Find a better approach
     private String getRole(String role) {
-        if (role.toLowerCase().trim().startsWith("tarif normal")) {
-            return "";
+        switch (role) {
+            case "Bénévole":
+                return "Bénévole";
+            case "Invitation communauté partenaire":
+                return "Communauté Partenaire";
+            case "Organisateur":
+                return "Organisateur";
+            case "Speaker":
+                return "Speaker";
+            case "Sponsor":
+            case "Sponsor Toulouse Métropole":
+                return "Sponsor";
+            default:
+                return "";
         }
+    }
 
-        return role;
+    // TODO(didier) Find a better approach
+    private String getColor(String role) {
+        switch (role) {
+            case "Bénévole":
+                return "#FF8888";
+            case "Invitation communauté partenaire":
+                return "#0000FF";
+            case "Organisateur":
+                return "#FF0000";
+            case "Speaker":
+                return "#00FF00";
+            case "Sponsor":
+            case "Sponsor Toulouse Métropole":
+                return "#00FFFF";
+            default:
+                return "#FFFFFF";
+        }
     }
 
     private void setEntry(Node node, String value, int fontInPixel) {

@@ -87,7 +87,7 @@ public final class Badges implements Action {
                         try (FileOutputStream stream = getFileOutputStream(outputDirectory, "badge-" + idx[0]++)) {
                             badge.generate(stream);
                         } catch (IOException e) {
-                            e.printStackTrace(); // TODO(didier) manage this error
+                            System.out.println("#ERROR " + e.getMessage());
                         }
                     });
                 }

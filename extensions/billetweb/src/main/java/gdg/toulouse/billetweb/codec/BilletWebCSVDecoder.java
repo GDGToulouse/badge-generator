@@ -15,14 +15,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings("FieldCanBeLocal")
-public class BilletWebCSVDecoder {
+import static gdg.toulouse.billetweb.codec.Constants.BILLET;
+import static gdg.toulouse.billetweb.codec.Constants.MAIL;
+import static gdg.toulouse.billetweb.codec.Constants.NAME;
+import static gdg.toulouse.billetweb.codec.Constants.ROLE;
+import static gdg.toulouse.billetweb.codec.Constants.SURNAME;
 
-    private static final String BILLET = "Billet";
-    private static String SURNAME = "Prénom";
-    private static String NAME = "Nom";
-    private static String ROLE = "Tarif";
-    private static String MAIL = "E-mail";
+public class BilletWebCSVDecoder {
 
     public static List<Attendee> getAttendeesFromStream(InputStream stream) throws IOException {
         final List<String> lines = getLineStream(stream).collect(Collectors.toList());

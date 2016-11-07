@@ -23,7 +23,7 @@ public class BilletWebCSVCommand implements AttendeeCommand {
         }
     }
 
-    private  CollectionBasedAttendeeRepository getAttendeeRepository(InputStream stream) throws IOException {
+    private CollectionBasedAttendeeRepository getAttendeeRepository(InputStream stream) throws IOException {
         final List<Attendee> attendees = BilletWebCSVDecoder.getAttendeesFromStream(stream);
         return new CollectionBasedAttendeeRepository(attendees);
     }
